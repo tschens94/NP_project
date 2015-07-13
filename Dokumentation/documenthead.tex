@@ -1,0 +1,74 @@
+\documentclass[a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{fancyhdr}
+\usepackage{vmargin}
+\usepackage{multirow}	
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{comment}
+\usepackage{graphics}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{framed}
+\usepackage{epsfig}
+\usepackage{subfigure}
+\usepackage{tikz}
+\usetikzlibrary{calc,trees,positioning,arrows,fit,shapes,calc}
+
+\usepackage{listings}
+\lstset{language=SQL,breaklines=true, keywordstyle = \color{blue},morekeywords={REPLACE, PARTITION, OVER, RANK, SUM, AVG}, breakatwhitespace=false,escapeinside={\%*}{*)}}
+
+\newcommand*\bl{\big(}
+\newcommand*\br{\big)}
+\newcommand*\Bl{\Big(}
+\newcommand*\Br{\Big)}
+\newcommand*\bgl{\bigg(}
+\newcommand*\bgr{\bigg)}
+\newcommand*\Bgl{\Bigg(}
+\newcommand*\Bgr{\Bigg)}
+\newcommand*\closeB{)\br\Br}
+\newcommand*\closebg{\closeB\bgr}
+\newcommand*\closeBg{\closebg\Bgr}
+
+
+\DeclareMathOperator*{\btie}{\bowtie}
+
+\def\union{\mathbin{\bigcup}}
+\def\selection{\mathbin{\sigma}}
+\def\projection{\mathbin{\pi}}
+\def\difference{\mathbin{-}}
+\def\crossproduct{\mathbin{\times}}
+\def\rename{\mathbin{\rho}}
+\def\intersect{\mathbin{\bigcap}}
+
+\def\leftsemijoin{\mathbin{\ltimes}}
+\def\rightsemijoin{\mathbin{\rtimes}}
+\def\leftantisemijoin{\mathbin{\vartriangleright}}
+\def\rightantisemijoin{\mathbin{\vartriangleleft}}
+
+\def\grouping{\mathbin{\gamma}}
+
+\def\join{\mathbin{\bowtie}}
+\def\ojoin{\setbox0=\hbox{$\bowtie$}%
+  \rule[-.02ex]{.25em}{.4pt}\llap{\rule[\ht0]{.25em}{.4pt}}}
+\def\leftouterjoin{\mathbin{\ojoin\mkern-5.8mu\bowtie}}
+\def\rightouterjoin{\mathbin{\bowtie\mkern-5.8mu\ojoin}}
+\def\fullouterjoin{\mathbin{\ojoin\mkern-5.8mu\bowtie\mkern-5.8mu\ojoin}}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlength{\headheight}{23pt}
+\setlength{\headsep}{43pt}
+
+\frenchspacing
+\pagestyle{fancy}
+\sloppy 
+
+\markright{headline}
+
+%Makro für das Relationalenmodell
+\newcommand{\relation}[2]{[#1]: \{[#2]\}}
+
+%Umgebung für verschiedene Aufgaben
+\newenvironment{task}[2]{\subsection*{Aufgabe #1 #2}}{}
