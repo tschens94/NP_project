@@ -15,7 +15,6 @@ Test test test
 
 \begin{itemize}
 	\item Anzahl der Threads geregelt über von außern steuerbaren Parameter
-	\item Unterteilung der Gitterstruktur dynamisch in mehrere Spalten
 	\item Graphen in unterschiedliche Klassen unterteilen
 	\item Objekte werden in Oberklasse zusammengefasst 
 	\item MP oder SM ? noch zu klären
@@ -28,6 +27,15 @@ Test test test
 
 \section{Allgemeines \& Überblick}
 Zur Lösung des nebenläufigen Problems wird die Graphenstruktur insgesamt in m gröbere Spalten unterteilt, wobei m als steuerbarer Parameter implementiert werden kann. Zusätz\-lich werden sog. Synchronisationsgrenzen implementiert, die angeben, nach wie vielen Iterationsschritten die Akkumulatoren an den Spaltenübergängen synchronisiert werden. Dieser Parameter soll ebenfalls von außen steuerbar sein. 
+%TODO klassennamen einfügen 
+Klassenstruktur: 
+Ein Graph wird dynamisch aufgebaut. Dafür gibt es eine Klasse \textit{klasse}. Ein Knoten entsteht, sobald sein Wert positiv wird. Die Knoten werden in einer Oberklasse \textit{Oberklasse} zusammengesetzt. Zur spaltenweise Abarbeitung wird es eine Klasse \textit{Column?} geben. 
+
+\section{Nebenläufige Probleme}
+Nebenläufige Probleme treten vor allem bei der iterativen Berechnung der Spalten durch mehrere Threads, als auch der Synchronisation der Akkumulatoren auf. Dazu gehen wir folgenden Weg:
+\begin{itemize}
+	\item Die Synchronisation soll 
+\end{itemize}
 %%%%%%%%%%%%%Here-comes-your-document%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
