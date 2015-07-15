@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014/W32TeX) (preloaded format=pdflatex 2014.10.30)  15 JUL 2015 20:28
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014/W32TeX) (preloaded format=pdflatex 2014.10.30)  15 JUL 2015 21:47
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1008,12 +1008,12 @@ LaTeX Font Info:    Try loading font information for T1+cmss on input line 28.
 (c:/texlive/2014/texmf-dist/tex/latex/base/t1cmss.fd
 File: t1cmss.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    Try loading font information for U+msa on input line 38.
+LaTeX Font Info:    Try loading font information for U+msa on input line 48.
 
 (c:/texlive/2014/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 38.
+LaTeX Font Info:    Try loading font information for U+msb on input line 48.
 
 (c:/texlive/2014/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
@@ -1036,7 +1036,7 @@ Class scrartcl Warning: Usage of deprecated font command `\rm'!
 (scrartcl)              Note also, that KOMA-Script will remove the definition
 (scrartcl)              of `\rm' anytime until release of about version 3.20.
 (scrartcl)              But for now, KOMA-Script will replace deprecated `\rm'
-(scrartcl)              by `\normalfont \rmfamily ' on input line 38.
+(scrartcl)              by `\normalfont \rmfamily ' on input line 48.
 
 [1{c:/texlive/2014/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
@@ -1049,18 +1049,18 @@ Class scrartcl Warning: Usage of deprecated font command `\rm'!
 Here is how much of TeX's memory you used:
  19223 strings out of 494264
  380295 string characters out of 6160654
- 484687 words of memory out of 5000000
+ 485687 words of memory out of 5000000
  22095 multiletter control sequences out of 15000+600000
  12849 words of font info for 38 fonts, out of 8000000 for 9000
  417 hyphenation exceptions out of 8191
- 68i,17n,73p,476b,348s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 68i,17n,73p,476b,350s stack positions out of 5000i,500n,10000p,200000b,80000s
 {c:/texlive/2014/texmf-dist/fonts/enc/dvip
 s/cm-super/cm-super-t1.enc}<c:/texlive/2014/texmf-dist/fonts/type1/public/amsfo
 nts/cm/cmsy10.pfb><c:/texlive/2014/texmf-dist/fonts/type1/public/cm-super/sfbx1
 095.pfb><c:/texlive/2014/texmf-dist/fonts/type1/public/cm-super/sfrm1095.pfb><c
 :/texlive/2014/texmf-dist/fonts/type1/public/cm-super/sfsx1440.pfb><c:/texlive/
 2014/texmf-dist/fonts/type1/public/cm-super/sfti1095.pfb>
-Output written on Milestone1.pdf (1 page, 87988 bytes).
+Output written on Milestone1.pdf (1 page, 97757 bytes).
 PDF statistics:
  32 PDF objects out of 1000 (max. 8388607)
  23 compressed objects within 1 object stream

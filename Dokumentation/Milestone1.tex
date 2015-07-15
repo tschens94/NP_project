@@ -26,16 +26,22 @@ Test test test
 
 
 \section{Allgemeines \& Überblick}
-Zur Lösung des nebenläufigen Problems wird die Graphenstruktur insgesamt in m gröbere Spalten unterteilt, wobei m als steuerbarer Parameter implementiert werden kann. Zusätz\-lich werden sog. Synchronisationsgrenzen implementiert, die angeben, nach wie vielen Iterationsschritten die Akkumulatoren an den Spaltenübergängen synchronisiert werden. Dieser Parameter soll ebenfalls von außen steuerbar sein. 
+Die Graphenstruktur wird insgesamt in m gröbere Spalten unterteilt, wobei m als steuerbarer Parameter implementiert werden kann. Zusätz\-lich werden sog. Synchronisationsgrenzen implementiert, die angeben, nach wie vielen Iterationsschritten die Akkumulatoren an den Spaltenübergängen synchronisiert werden. Dieser Parameter soll ebenfalls von außen steuerbar sein. 
 %TODO klassennamen einfügen 
+
 Klassenstruktur: 
-Ein Graph wird dynamisch aufgebaut. Dafür gibt es eine Klasse \textit{klasse}. Ein Knoten entsteht, sobald sein Wert positiv wird. Die Knoten werden in einer Oberklasse \textit{Oberklasse} zusammengesetzt. Zur spaltenweise Abarbeitung wird es eine Klasse \textit{Column?} geben. 
+Ein Graph wird dynamisch aufgebaut. Dafür gibt es eine Klasse \textit{klasse}. Ein Knoten entsteht, sobald sein Wert positiv wird. Die Knoten werden in einer Oberklasse \textit{Oberklasse} zusammengesetzt. Zur spaltenweise Abarbeitung wird es eine Klasse \textit{Column?} geben. Jede Column bekommt nach Erstellung einen Thread zugewiesen, der die Berechnungen in jeder Iteration übernimmt. 
 
 \section{Nebenläufige Probleme}
 Nebenläufige Probleme treten vor allem bei der iterativen Berechnung der Spalten durch mehrere Threads, als auch der Synchronisation der Akkumulatoren auf. Dazu gehen wir folgenden Weg:
 \begin{itemize}
-	\item Die Synchronisation soll 
+	%TODO Entscheidung MP / SM 
+	\item Die Synchronisation soll erfolgen, sobald zwei Spalten in den Fall des Propagierens gelangen \textit{Bedingung hierfür ist was ?}. Falls diese Bedingung erfüllt ist, werden mitels eines Message Passing  / Shared Memory Konzepts die Daten der Akkumulatoren ausgetauscht. Zyklisches Verhalten bei seltenem Propagieren? Wie handhaben ?
+	\item Wie wird die Synchronisationsbedingung i = k (Iterationsstadien unterschiedlicher Spalten) sichergestellt?
+	\item Globale / Lokale Konvergenz: alle Threads erreichen ein Maximum an Iterationen ? Alle Spalten bekommen eine eigene Approximationsgrenze ? 
 \end{itemize}
+
+\section{Verwendete Datenstrukur}
 %%%%%%%%%%%%%Here-comes-your-document%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
