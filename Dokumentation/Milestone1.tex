@@ -6,44 +6,37 @@
 
 % Add the title of the assignment sheet, your names and your Tutorialgroup here:
 \newcommand{\subttl}{\textbf{Milestone 1}}
-\newcommand{\StudNameOne}{Jens Heinen (2542182)}
+\newcommand{\StudNameOne}{Christoph Rosenhauer (2549220)}
 \newcommand{\StudNameTwo}{Lukas Schaal (2539218)}
-\newcommand{\StudNameThree}{Christoph Rosenhauer (2549220)}
+\newcommand{\StudNameThree}{Jens Heinen (2542182)}
 \include{headline}
-\newcommand{\ndt}{Nichtdeterminismus }
-Test test test
 
-\begin{itemize}
-	\item Notiz: Max Wert von Initialisierung wird nie überschritten!
-	
-\end{itemize}
 \section{Allgemeines \& Überblick}
-Die Graphenstruktur wird insgesamt in m gröbere Spalten unterteilt, wobei m als steuerbarer Parameter implementiert werden kann. Zusätz\-lich werden sog. Synchronisationsgrenzen implementiert, die angeben, nach wie vielen Iterationsschritten die Akkumulatoren an den Spaltenübergängen synchronisiert werden. Dieser Parameter soll ebenfalls von außen steuerbar sein. 
+Die Graphenstruktur wird insgesamt in m gröbere Spalten unterteilt, wobei m als steuerbarer Parameter implementiert werden kann. Zusätz\-lich werden sog. Synchronisationsgrenzen  angegeben, nach wie vielen Iterationsschritten die Akkumulatoren an den Spaltenübergängen synchronisiert werden sollen. Dieser Parameter soll ebenfalls von außen steuerbar sein. 
 %TODO klassennamen einfügen 
-
-Klassenstruktur: 
-Ein Graph wird dynamisch aufgebaut. Dafür gibt es eine Klasse \textit{klasse}. Ein Knoten entsteht, sobald sein Wert positiv wird. Die Knoten werden in einer Oberklasse \textit{Oberklasse} zusammengesetzt. Zur spaltenweise Abarbeitung wird es eine Klasse \textit{Column?} geben. Jede Column bekommt nach Erstellung einen Thread zugewiesen, der die Berechnungen in jeder Iteration übernimmt. 
 
 \section{Nebenläufige Probleme}
 Hier gehen wir folgenden Weg:
 \begin{itemize}
 	%TODO Entscheidung MP / SM 
-	\item Die Synchronisation soll anhand eines Parameters erfolgen. Falls diese Bedingung erfüllt ist, werden mitels Shared Memory die Daten der Akkumulatoren ausgetauscht. Zwei oder mehrere Zyklisches Verhalten bei seltenem Propagieren? Wie handhaben ?
-	-> Testen ob Akkumulatorgröße für Synchronisation von Bedeutung ist. 
+	\item Die Synchronisation soll anhand eines Parameters erfolgen. Falls diese Bedingung erfüllt ist, werden mitels Shared Memory die Daten der Akkumulatoren ausgetauscht. Zwei oder mehrere %TODO Synchronisation beschreiben.
 	\item Wie wird die Synchronisationsbedingung i = k (Iterationsstadien unterschiedlicher Spalten) sichergestellt?
-	\item Globale / Lokale Konvergenz: alle Threads erreichen ein Maximum an Iterationen ? Alle Spalten bekommen eine eigene Approximationsgrenze ? 
+	Synchronisiert wird auf folgende Weise: Nach x festgelegten Iterationstasks wird ein Synchronisationstask an alle Threads übergeben. Dabei nimmt sich ein Thread die Referenzen auf die Nachbarspalten und verrechnet Akkumulatordaten und aktuelle Werte der Knoten.
 \end{itemize}
 
 \section{Verwendete Datenstrukur}
-Der gegebene Graph ist ein $n\times m$ Graph. Dabei wird das Objekt intern auch in m Spalten unterteilt. Die Anzahl der operierenden Threads wird über einen Parameter gegeben. Ein Thread bekommt dabei einen Task übergeben und bearbeitet nach diesem Task eine oder mehrere Spalten des Graphen. Die Threads werden mittels eines Threadpools / Scheduler den Spalten zugewiesen. Die Tasks beinhalten lokale Austausch, Synchronisation zwischen mehreren Spalten und globale Konvergenz.
-Jede Spalte besteht aus ihren Knoten und Vektoren der link und rechtbenachtbarten Akkumulatoren. 
+Der gegebene Graph ist ein $n\times m$ Graph. Dabei wird das Objekt intern auch in m Spalten unterteilt. Die Anzahl der operierenden Threads wird über einen Parameter gegeben. Ein Thread bekommt dabei einen Task übergeben und bearbeitet nach diesem Task eine oder mehrere Spalten des Graphen. Die Threads werden mittels eines Threadpools / Scheduler den Spalten zugewiesen. Die Tasks beinhalten lokalen Austausch, Synchronisation zwischen mehreren Spalten und globale Konvergenz.
+Jede Spalte besteht aus ihren Knoten und Vektoren der links- und rechtsbenachbarten Akkumulatoren. Durch Call-by-Reference kann ein Thread, der gerade Spalte $j$ bearbeitet, auch Daten von Spalte $j-1$ \& $j+1$ bekommen. An dieser Stelle sollte durch genaues Locking die Gefahr von Data Races verhindert werden. 
 Ein Knoten ist ein Objekt, das nur seinen aktuellen Wert kennt. Die Übergangsrate ist in der GraphInfo Klasse enthalten. 
 
 \section{Konvergenz}
+\subsection{Lokale Konvergenz}
 Die lokale Konvergenz innerhalb einer Spalte wird nach festgelegten Iterationsschritten (abhängig von Parameter) durchgeführt. Im Falle einer erkannten lokalen Konvergenz einer Spalte, wird mit den benachbarten Spalten synchronisiert. Falls nicht, wird nach x Iterationen definitiv synchronisiert, wobei x als Input kommt. 
+
+\subsection{Globale Konvergenz}
 Globale Konvergenz erfolgt implizit durch lokale Konvergenz. 
-2 Synchronisationsarten: 1 festgelegte nach Parameter, eine bei Konvergenz lokal.
-Wenn lokale KOnvergenz -> Überprüfung inflow <-> Outflow verhlältnis zur globalen Konvergenz. 
+2 Synchronisationsarten: 1 festgelegte nach Parameter, eine bei lokaler Konvergenz.
+Wenn lokale Konvergenz vorliegt, wird das Verhältnis zwischen Inflow und Outflow der betreffenden Spalten überprüft. Wenn der  Unterschied zwischen Inflow \& Outflow zu groß wird , muss in kleineren Iterationsdistanzen überprüft werden. 
 %Als Datenstruktur implementieren wir eine \textit{ArrayList?} deren Elemente einzelne Knoten sind. Jeder Knoten speichert linke und rechte Akkumulatorenfelder.  
 %%%%%%%%%%%%%Here-comes-your-document%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
