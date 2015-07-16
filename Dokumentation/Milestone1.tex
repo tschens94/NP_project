@@ -33,15 +33,16 @@ Klassenstruktur:
 Ein Graph wird dynamisch aufgebaut. Dafür gibt es eine Klasse \textit{klasse}. Ein Knoten entsteht, sobald sein Wert positiv wird. Die Knoten werden in einer Oberklasse \textit{Oberklasse} zusammengesetzt. Zur spaltenweise Abarbeitung wird es eine Klasse \textit{Column?} geben. Jede Column bekommt nach Erstellung einen Thread zugewiesen, der die Berechnungen in jeder Iteration übernimmt. 
 
 \section{Nebenläufige Probleme}
-Nebenläufige Probleme treten vor allem bei der iterativen Berechnung der Spalten durch mehrere Threads, als auch der Synchronisation der Akkumulatoren auf. Dazu gehen wir folgenden Weg:
+Hier gehen wir folgenden Weg:
 \begin{itemize}
 	%TODO Entscheidung MP / SM 
-	\item Die Synchronisation soll erfolgen, sobald zwei Spalten in den Fall des Propagierens gelangen \textit{Bedingung hierfür ist was ?}. Falls diese Bedingung erfüllt ist, werden mitels eines Message Passing  / Shared Memory Konzepts die Daten der Akkumulatoren ausgetauscht. Zyklisches Verhalten bei seltenem Propagieren? Wie handhaben ?
+	\item Die Synchronisation soll erfolgen, sobald zwei Spalten in den Fall des Propagierens gelangen \textcolor{red}{\textit{Bedingung hierfür ist was ?}}. Falls diese Bedingung erfüllt ist, werden mitels eines Message Passing  / Shared Memory Konzepts die Daten der Akkumulatoren ausgetauscht. Zyklisches Verhalten bei seltenem Propagieren? Wie handhaben ?
 	\item Wie wird die Synchronisationsbedingung i = k (Iterationsstadien unterschiedlicher Spalten) sichergestellt?
 	\item Globale / Lokale Konvergenz: alle Threads erreichen ein Maximum an Iterationen ? Alle Spalten bekommen eine eigene Approximationsgrenze ? 
 \end{itemize}
 
 \section{Verwendete Datenstrukur}
+Als Datenstruktur implementieren wir eine \textit{ArrayList?} deren Elemente einzelne Knoten sind. Jeder Knoten speichert linke und rechte Akkumulatorenfelder.  
 %%%%%%%%%%%%%Here-comes-your-document%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
