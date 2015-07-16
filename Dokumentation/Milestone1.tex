@@ -14,17 +14,9 @@
 Test test test
 
 \begin{itemize}
-	\item Anzahl der Threads geregelt über von außern steuerbaren Parameter
-	\item Graphen in unterschiedliche Klassen unterteilen
-	\item Objekte werden in Oberklasse zusammengefasst 
-	\item MP oder SM ? noch zu klären
 	\item Notiz: Max Wert von Initialisierung wird nie überschritten!
-	\item Unterteilung der Graphstrukur in gröbere "Spalten", die aus mehreren Einzelspalten bestehen
-	\item Jede Spalte wird von einem Thread bearbeitet
 	
 \end{itemize}
-
-
 \section{Allgemeines \& Überblick}
 Die Graphenstruktur wird insgesamt in m gröbere Spalten unterteilt, wobei m als steuerbarer Parameter implementiert werden kann. Zusätz\-lich werden sog. Synchronisationsgrenzen implementiert, die angeben, nach wie vielen Iterationsschritten die Akkumulatoren an den Spaltenübergängen synchronisiert werden. Dieser Parameter soll ebenfalls von außen steuerbar sein. 
 %TODO klassennamen einfügen 
@@ -36,13 +28,18 @@ Ein Graph wird dynamisch aufgebaut. Dafür gibt es eine Klasse \textit{klasse}. 
 Hier gehen wir folgenden Weg:
 \begin{itemize}
 	%TODO Entscheidung MP / SM 
-	\item Die Synchronisation soll erfolgen, sobald zwei Spalten in den Fall des Propagierens gelangen \textcolor{red}{\textit{Bedingung hierfür ist was ?}}. Falls diese Bedingung erfüllt ist, werden mitels eines Message Passing  / Shared Memory Konzepts die Daten der Akkumulatoren ausgetauscht. Zyklisches Verhalten bei seltenem Propagieren? Wie handhaben ?
+	\item Die Synchronisation soll anhand eines Parameters erfolgen. Falls diese Bedingung erfüllt ist, werden mitels Shared Memory die Daten der Akkumulatoren ausgetauscht. Zwei oder mehrere Zyklisches Verhalten bei seltenem Propagieren? Wie handhaben ?
+	-> Testen ob Akkumulatorgröße für Synchronisation von Bedeutung ist. 
 	\item Wie wird die Synchronisationsbedingung i = k (Iterationsstadien unterschiedlicher Spalten) sichergestellt?
 	\item Globale / Lokale Konvergenz: alle Threads erreichen ein Maximum an Iterationen ? Alle Spalten bekommen eine eigene Approximationsgrenze ? 
 \end{itemize}
 
 \section{Verwendete Datenstrukur}
-Als Datenstruktur implementieren wir eine \textit{ArrayList?} deren Elemente einzelne Knoten sind. Jeder Knoten speichert linke und rechte Akkumulatorenfelder.  
+Einzelne Spalten der Graphstruktur werden anhand eines Parameters zu mehreren "Threadspalten" zusammengefasst. Eine Threadspalte wird von einem einzelnen Thread bearbeitet. Dabei synchronisiert dieser Thread lokal zwischen den Graphspalten nach jeder Iteration.
+Zwischen mehreren Threadspalten wird nach einer gewissen Zeit synchronisiert, die von einem äußeren Parameter abhängt. Dazu hat jede Threadspalte eine Referenz auf ihre Nachbarn und kann unabhängig von anderen Threadspalten mit ihren Nachbarn synchronisieren.  
+Jede Threadspalte kennt ihre Größe und kann daraus ableiten, ob bei einer Synchronisation ein neuer Knoten eine neue Threadspalte startet, oder in eine bereits existierende eingefügt wird. 
+Ein Knoten ist ein Objekt, das nur seinen aktuellen Wert kennt. Die Übergangsrate ist in der GraphInfo Klasse enthalten. 
+%Als Datenstruktur implementieren wir eine \textit{ArrayList?} deren Elemente einzelne Knoten sind. Jeder Knoten speichert linke und rechte Akkumulatorenfelder.  
 %%%%%%%%%%%%%Here-comes-your-document%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
