@@ -35,10 +35,15 @@ Hier gehen wir folgenden Weg:
 \end{itemize}
 
 \section{Verwendete Datenstrukur}
-Einzelne Spalten der Graphstruktur werden anhand eines Parameters zu mehreren "Threadspalten" zusammengefasst. Eine Threadspalte wird von einem einzelnen Thread bearbeitet. Dabei synchronisiert dieser Thread lokal zwischen den Graphspalten nach jeder Iteration.
-Zwischen mehreren Threadspalten wird nach einer gewissen Zeit synchronisiert, die von einem äußeren Parameter abhängt. Dazu hat jede Threadspalte eine Referenz auf ihre Nachbarn und kann unabhängig von anderen Threadspalten mit ihren Nachbarn synchronisieren.  
-Jede Threadspalte kennt ihre Größe und kann daraus ableiten, ob bei einer Synchronisation ein neuer Knoten eine neue Threadspalte startet, oder in eine bereits existierende eingefügt wird. 
+Der gegebene Graph ist ein $n\times m$ Graph. Dabei wird das Objekt intern auch in m Spalten unterteilt. Die Anzahl der operierenden Threads wird über einen Parameter gegeben. Ein Thread bekommt dabei einen Task übergeben und bearbeitet nach diesem Task eine oder mehrere Spalten des Graphen. Die Threads werden mittels eines Threadpools / Scheduler den Spalten zugewiesen. Die Tasks beinhalten lokale Austausch, Synchronisation zwischen mehreren Spalten und globale Konvergenz.
+Jede Spalte besteht aus ihren Knoten und Vektoren der link und rechtbenachtbarten Akkumulatoren. 
 Ein Knoten ist ein Objekt, das nur seinen aktuellen Wert kennt. Die Übergangsrate ist in der GraphInfo Klasse enthalten. 
+
+\section{Konvergenz}
+Die lokale Konvergenz innerhalb einer Spalte wird nach festgelegten Iterationsschritten (abhängig von Parameter) durchgeführt. Im Falle einer erkannten lokalen Konvergenz einer Spalte, wird mit den benachbarten Spalten synchronisiert. Falls nicht, wird nach x Iterationen definitiv synchronisiert, wobei x als Input kommt. 
+Globale Konvergenz erfolgt implizit durch lokale Konvergenz. 
+2 Synchronisationsarten: 1 festgelegte nach Parameter, eine bei Konvergenz lokal.
+Wenn lokale KOnvergenz -> Überprüfung inflow <-> Outflow verhlältnis zur globalen Konvergenz. 
 %Als Datenstruktur implementieren wir eine \textit{ArrayList?} deren Elemente einzelne Knoten sind. Jeder Knoten speichert linke und rechte Akkumulatorenfelder.  
 %%%%%%%%%%%%%Here-comes-your-document%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
