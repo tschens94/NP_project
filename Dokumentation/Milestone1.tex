@@ -12,21 +12,23 @@
 \include{headline}
 
 \section{Allgemeines \& Überblick}
-Die Graphenstruktur wird insgesamt in m gröbere Spalten unterteilt, wobei m als steuerbarer Parameter implementiert werden kann. Zusätz\-lich werden sog. Synchronisationsgrenzen  angegeben, nach wie vielen Iterationsschritten die Akkumulatoren an den Spaltenübergängen synchronisiert werden sollen. Dieser Parameter soll ebenfalls von außen steuerbar sein. 
-%TODO klassennamen einfügen 
+%TODO verbessern
+Die Graphstruktur $n \times m$ soll durch eine variable Anzahl von Threads bearbeitet werden. Dabei kann das von 1 Thread (optional sequentielles Bearbeiten) bis zu m Threads reichen, so dass jede Spalte des Graphs in jeder Iteration von genau einem Thread bearbeitet werden. 
+Zusätzlich werden sog. Synchronisationsgrenzen  angegeben, nach wie vielen Iterationsschritten die Akkumulatoren an den Spaltenübergängen auf jeden synchronisiert werden sollen, unabhängig von lokaler Konvergenz. Dieser Parameter soll von außen steuerbar sein. 
 
 \section{Nebenläufige Probleme}
 Hier gehen wir folgenden Weg:
-\begin{itemize}
-	%TODO Entscheidung MP / SM 
-	\item Die Synchronisation soll anhand eines Parameters erfolgen. Falls diese Bedingung erfüllt ist, werden mitels Shared Memory die Daten der Akkumulatoren ausgetauscht. Zwei oder mehrere %TODO Synchronisation beschreiben.
-	\item Wie wird die Synchronisationsbedingung i = k (Iterationsstadien unterschiedlicher Spalten) sichergestellt?
-	Synchronisiert wird auf folgende Weise: Nach x festgelegten Iterationstasks wird ein Synchronisationstask an alle Threads übergeben. Dabei nimmt sich ein Thread die Referenzen auf die Nachbarspalten und verrechnet Akkumulatordaten und aktuelle Werte der Knoten.
-\end{itemize}
+Der Zeitpunkt der Synchronisation soll anhand eines Parameters erfolgen. Falls diese Bedingung erfüllt ist, werden mitels Shared Memory die Daten der Akkumulatoren ausgetauscht, wie folgt: 
+
+Nach x festgelegten Iterationstasks wird ein Synchronisationstask an den Threadpool übergeben. An dieser Stelle ist wichtig, dass zum Beginn der Synchronisation zweier (oder mehrerer Spalten) kein Thread mehr einen Iterationstask auf einer der Spalten ausführt. Ein Thread nimmt sich nun die Referenzen auf die Nachbarspalten und verrechnet Akkumulatordaten und aktuelle Werte der Knoten. Hierbei muss darauf geachtet werden, ob die propagierenden Spalten von einem oder mehreren Threads bearbeitet werden. In Abhängigkeit 
 
 \section{Verwendete Datenstrukur}
-Der gegebene Graph ist ein $n\times m$ Graph. Dabei wird das Objekt intern auch in m Spalten unterteilt. Die Anzahl der operierenden Threads wird über einen Parameter gegeben. Ein Thread bekommt dabei einen Task übergeben und bearbeitet nach diesem Task eine oder mehrere Spalten des Graphen. Die Threads werden mittels eines Threadpools / Scheduler den Spalten zugewiesen. Die Tasks beinhalten lokalen Austausch, Synchronisation zwischen mehreren Spalten und globale Konvergenz.
+Der gegebene Graph ist ein $n\times m$ Graph. Dabei wird das Objekt intern auch in m Spalten unterteilt. 
+
+Die Anzahl der operierenden Threads wird über einen Parameter gegeben. Ein Thread bekommt dabei einen Task übergeben und bearbeitet nach diesem Task eine oder mehrere Spalten des Graphen. Die Threads werden mittels eines Threadpools / Scheduler den Spalten zugewiesen und bei Bedarf erstellt. Die Tasks beinhalten lokalen Austausch, Synchronisation zwischen mehreren Spalten und globale Konvergenz.
+
 Jede Spalte besteht aus ihren Knoten und Vektoren der links- und rechtsbenachbarten Akkumulatoren. Durch Call-by-Reference kann ein Thread, der gerade Spalte $j$ bearbeitet, auch Daten von Spalte $j-1$ \& $j+1$ bekommen. An dieser Stelle sollte durch genaues Locking die Gefahr von Data Races verhindert werden. 
+
 Ein Knoten ist ein Objekt, das nur seinen aktuellen Wert kennt. Die Übergangsrate ist in der GraphInfo Klasse enthalten. 
 
 \section{Konvergenz}
