@@ -31,11 +31,10 @@ Ein Knoten ist ein Objekt, das nur seinen aktuellen Wert kennt. Die Übergangsra
 
 \section{Konvergenz}
 \subsection{Lokale Konvergenz}
-Die lokale Konvergenz innerhalb einer Spalte wird nach festgelegten Iterationsschritten (abhängig von Parameter) durchgeführt. Im Falle einer erkannten lokalen Konvergenz einer Spalte, wird mit den benachbarten Spalten synchronisiert. Falls nicht, wird nach x Iterationen definitiv synchronisiert, wobei x als Input kommt. 
+Die lokale Konvergenz innerhalb einer Spalte wird nach festgelegten Iterationsschritten (abhängig von Parameter) überprüft. Im Falle einer erkannten lokalen Konvergenz innerhalb einer Spalte wird mit den benachbarten Spalten synchronisiert. Dafür werden der Iterationszustand i von Spalte j und  Zustand k von Spalte j+1 angepasst, so dass i = k gilt. Dazu wird die Spalte mit der lokalen Konvergenz so lange iteriert, bis sie auf dem gleichen Stand ist wie die benachbarte Spalte. Falls nicht, wird nach x Iterationen definitiv synchronisiert, wobei x von einem Parameter abgeleitet wird. Inwiefern x davon abhängt, wird durch Tests ermittelt und im Laufe der Implementierung optimiert. 
 
 \subsection{Globale Konvergenz}
-Globale Konvergenz erfolgt implizit durch lokale Konvergenz. 
-2 Synchronisationsarten: 1 festgelegte nach Parameter, eine bei lokaler Konvergenz.
+Globale Konvergenz erfolgt implizit durch lokale Konvergenz. Dazu existieren 2 Synchronisationsarten: Eine festgelegt durch den Parameter, eine bei lokaler Konvergenz einer Spalte.
 Wenn lokale Konvergenz vorliegt, wird das Verhältnis zwischen Inflow und Outflow der betreffenden Spalten überprüft. Wenn der  Unterschied zwischen Inflow \& Outflow zu groß wird , muss in kleineren Iterationsdistanzen überprüft werden. 
 %Als Datenstruktur implementieren wir eine \textit{ArrayList?} deren Elemente einzelne Knoten sind. Jeder Knoten speichert linke und rechte Akkumulatorenfelder.  
 %%%%%%%%%%%%%Here-comes-your-document%%%%%%%%%%%%
