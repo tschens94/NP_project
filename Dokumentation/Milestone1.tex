@@ -17,10 +17,10 @@ Die Graphstruktur $n \times m$ soll durch eine variable Anzahl von Threads bearb
 Zusätzlich werden sog. Synchronisationsgrenzen  angegeben, nach wie vielen Iterationsschritten die Akkumulatoren an den Spaltenübergängen auf jeden synchronisiert werden sollen, unabhängig von lokaler Konvergenz. Dieser Parameter soll von außen steuerbar sein. 
 
 \section{Nebenläufige Probleme}
-Hier gehen wir folgenden Weg:
-Der Zeitpunkt der Synchronisation soll anhand eines Parameters erfolgen. Falls diese Bedingung erfüllt ist, werden mitels Shared Memory die Daten der Akkumulatoren ausgetauscht, wie folgt: 
+Der Zeitpunkt der Synchronisation soll anhand eines Parameters erfolgen. Falls diese Bedingung erfüllt ist, werden mitels Shared Memory die Daten der Akkumulatoren ausgetauscht. Im Detail wie folgt:
 
-Nach x festgelegten Iterationstasks wird ein Synchronisationstask an den Threadpool übergeben. An dieser Stelle ist wichtig, dass zum Beginn der Synchronisation zweier (oder mehrerer Spalten) kein Thread mehr einen Iterationstask auf einer der Spalten ausführt. Ein Thread nimmt sich nun die Referenzen auf die Nachbarspalten und verrechnet Akkumulatordaten und aktuelle Werte der Knoten. Hierbei muss darauf geachtet werden, ob die propagierenden Spalten von einem oder mehreren Threads bearbeitet werden. In Abhängigkeit 
+Wir starten mit x Iterationstasks für jede Spalte, die an den Threadpool übergeben werden. Danach rufen wir \textit{shutdown}  auf dem Pool auf (er nimmt danach keine neuen Tasks an, führt die übergebenen jedoch weiter aus. Hierbei ist die Reihenfolge der Ausführung prinzipiell egal.) Danach wartet der ThreadPool mit \textit{awaitTermination} als Bedinung einer while-Schleife, bis alle noch laufenden Threads ihren Task beendet haben.
+Dann wird ein Synchronisationstask an den Threadpool übergeben. An dieser Stelle ist wichtig, dass zum Beginn der Synchronisation zweier (oder mehrerer Spalten) kein Thread mehr einen Iterationstask auf einer der Spalten ausführt. Ein Thread nimmt sich nun die Referenzen auf die Nachbarspalten und verrechnet Akkumulatordaten und aktuelle Werte der Knoten. Hierbei muss darauf geachtet werden, ob die propagierenden Spalten von einem oder mehreren Threads bearbeitet werden.
 
 \section{Verwendete Datenstrukur}
 Der gegebene Graph ist ein $n\times m$ Graph. Dabei wird das Objekt intern auch in m Spalten unterteilt. 
