@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2015.7.6)  20 JUL 2015 13:11
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2015.7.6)  20 JUL 2015 13:37
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1087,7 +1087,7 @@ Here is how much of TeX's memory you used:
  24193 multiletter control sequences out of 15000+600000
  10647 words of font info for 29 fonts, out of 8000000 for 9000
  693 hyphenation exceptions out of 8191
- 59i,17n,73p,569b,348s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 59i,17n,73p,584b,348s stack positions out of 5000i,500n,10000p,200000b,80000s
 {c:/texlive/2015/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}<c:/texl
 ive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><c:/texlive/2015/
 texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/texlive/2015/texmf-dist
@@ -1096,10 +1096,10 @@ pe1/public/cm-super/sfbx1000.pfb><c:/texlive/2015/texmf-dist/fonts/type1/public
 /cm-super/sfbx1200.pfb><c:/texlive/2015/texmf-dist/fonts/type1/public/cm-super/
 sfbx1440.pfb><c:/texlive/2015/texmf-dist/fonts/type1/public/cm-super/sfrm1000.p
 fb><c:/texlive/2015/texmf-dist/fonts/type1/public/cm-super/sfti1000.pfb>
-Output written on Milestone1.pdf (2 pages, 119180 bytes).
+Output written on Milestone1.pdf (2 pages, 119188 bytes).
 PDF statistics:
- 80 PDF objects out of 1000 (max. 8388607)
- 67 compressed objects within 1 object stream
+ 81 PDF objects out of 1000 (max. 8388607)
+ 68 compressed objects within 1 object stream
  9 named destinations out of 1000 (max. 500000)
  61 words of extra memory for PDF output out of 10000 (max. 10000000)
 
