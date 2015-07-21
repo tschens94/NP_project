@@ -16,16 +16,17 @@
 
 \section{Allgemeines \& Überblick}
 %TODO verbessern
-Die Graphstruktur $n \times m$ soll durch eine variable Anzahl von Threads bearbeitet werden. Dabei kann das von 1 Thread (optional sequentielles Bearbeiten) bis zu m Threads reichen, so dass jede Spalte des Graphen in jeder Iteration von genau einem Thread bearbeitet werden. 
-Zusätzlich werden sog. Synchronisationsgrenzen  angegeben, nach wie vielen Iterationsschritten die Akkumulatoren an den Spaltenübergängen synchronisiert werden sollen. Dieser Parameter soll von außen steuerbar sein. 
+Die Graphstruktur $n \times m$ soll durch eine variable Anzahl von Threads bearbeitet werden, was von 1 Thread (optional sequentielles Bearbeiten) bis zu m Threads reichen kann, so dass jede Spalte des Graphen in jeder Iteration von genau einem Thread bearbeitet wird. 
+Zusätzlich werden sog. Synchronisationsgrenzen  angegeben, nach wie vielen Iterationsschritten die Akkumulatoren an den Spaltenübergängen synchronisiert werden sollen. Dieser Parameter soll von außen steuerbar sein. Zur verwendeten Datenstruktur siehe \ref{datastructure}.
 
 \section{Nebenläufige Probleme}
 Der Zeitpunkt der Synchronisation soll anhand eines Parameters erfolgen. Falls diese Bedingung erfüllt ist, werden mittels Shared Memory die Daten der Akkumulatoren ausgetauscht. Im Detail wie folgt:
 
-Wir starten mit x Iterationstasks für jede Spalte, die an den Threadpool übergeben werden. Danach rufen wir \textit{shutdown}  auf dem Pool auf (er nimmt danach keine neuen Tasks an, führt die übergebenen jedoch weiter aus. Hierbei ist die Reihenfolge der Ausführung prinzipiell egal.) Danach wartet der ThreadPool mit \textit{awaitTermination} als Bedingung einer while-Schleife, bis alle noch laufenden Threads ihren Task beendet haben.
-Dann wird ein Synchronisationstask an den Threadpool übergeben. An dieser Stelle ist wichtig, dass zum Beginn der Synchronisation zweier (oder mehrerer Spalten) kein Thread mehr einen Iterationstask auf einer der Spalten ausführt. Ein Thread nimmt sich nun die Referenzen auf die Nachbarspalten und verrechnet Akkumulatordaten und aktuelle Werte der Knoten, in Abhängigkeit von vorhandener lokaler Konvergenz, siehe \ref{lk}. Hierbei muss darauf geachtet werden, ob die propagierenden Spalten von einem oder mehreren Threads bearbeitet werden.
+Wir starten für jede Spalte einen Iterationstask, der x Iterationen ausführt. Dieser wird an den Threadpool übergeben. Danach rufen wir \textit{shutdown}  auf dem Pool auf (er nimmt danach keine neuen Tasks an, führt die übergebenen jedoch weiter aus. Hierbei ist die Reihenfolge der Ausführung prinzipiell egal.) Danach wartet der ThreadPool mit \textit{awaitTermination} als Bedingung einer while-Schleife, bis alle noch laufenden Threads ihren Task beendet haben.
+Dann wird ein Synchronisationstask für je 2 benachbarte Spalten an den Threadpool übergeben. An dieser Stelle ist wichtig, dass zum Beginn der Synchronisation zweier Spalten kein Thread mehr einen Iterationstask auf einer der Spalten ausführt. Ein Thread nimmt sich nun die Referenzen auf die Nachbarspalten und verrechnet Akkumulatordaten und aktuelle Werte der Knoten, in Abhängigkeit von vorhandener lokaler Konvergenz, siehe \ref{lk}. Hierbei muss beachtet werden, ob die propagierenden Spalten von einem oder mehreren Threads bearbeitet werden.
 
 \section{Verwendete Datenstrukur}
+\label{datastructure}
 Der gegebene Graph ist ein $n\times m$ Graph. Dabei wird das Objekt intern auch in m Spalten unterteilt. 
 
 Die Zahl der erstellten Threads hängt vom verwendeten Threadpool ab. Ein Thread bekommt dabei einen Task übergeben und bearbeitet nach diesem Task eine oder mehrere Spalten des Graphen. Ein Task steht für x Iterationsschritte; für jede Spalte wird ein eigener Task gebaut. Die Threads werden mittels eines Threadpools den Spalten zugewiesen und bei Bedarf erstellt. Die Tasks beinhalten lokalen Austausch (vertikale Berechnung und Erstellen der Akkumulatoren) und Synchronisation zwischen mehreren Spalten.
@@ -37,7 +38,7 @@ Ein Knoten ist ein Objekt, das seinen aktuellen Wert und den alten Wert zur Übe
 \section{Konvergenz}
 \subsection{Lokale Konvergenz}
 \label{lk}
-Die lokale Konvergenz hängt nicht nur vom vertikalen flow, sondern auch vom horizontalen inflow/outflow der beteiligten Spalten ab. Diese Konvergenz wird nicht explizit nach x Iterationsschritten geprüft, sondern implizit nach einer erfolgreichen Synchronisation. Wenn in einer Spalte nach x Iterationen keine Änderung der Knotenwerte erfolgte und die Differenz von inflow \& outflow  $ \leq \epsilon$ ist, so ist diese Spalte lokal konvergent.  Dies kann sich durch Änderung des inflows ändern. 
+Die lokale Konvergenz hängt nicht nur vom vertikalen flow, sondern auch vom horizontalen inflow/outflow der beteiligten Spalten ab. Diese Konvergenz wird nicht explizit nach x Iterationsschritten geprüft, sondern implizit nach einer erfolgreichen Synchronisation. Wenn in einer Spalte nach x Iterationen keine Änderung der Knotenwerte erfolgte und  $ |inflow - outflow | \leq \epsilon$ ist, so ist diese Spalte lokal konvergent.  Dies kann sich durch Änderung des inflows ändern. 
 
 Aus dieser Definition von lokaler Konvergenz ergeben sich drei Synchronisationsfälle:
 \begin{itemize}
