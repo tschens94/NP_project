@@ -3,7 +3,7 @@ package np2015;
 import java.util.ArrayList;
 import java.util.Vector;
 
-public class Graph {
+public class Graph implements ImageConvertible {
 		/**
 		 * object representation of the graph.
 		 */
@@ -43,6 +43,12 @@ public class Graph {
 
 		public void setColumn(int column) {
 			this.column = column;
+		}
+
+		@Override
+		public double getValueAt(int column, int row) {
+			// TODO Auto-generated method stub
+			return 0;
 		}
 
 }
