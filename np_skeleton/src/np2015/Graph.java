@@ -1,30 +1,37 @@
 package np2015;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 public class Graph implements ImageConvertible {
 		/**
 		 * object representation of the graph.
 		 */
-		private  ArrayList<Vector<Integer>> graph = new ArrayList<>();
+		private  Vector<Column> graph;
 		/**
 		 * row size and column size of the graph.
 		 */
 		private int row, column; 
 
 		/**
-		 * @param n: row size
-		 * @param m: column size
+		 * @param ginfo: The GraphInfo instance to take information from
 		 * Constructor of the graph object
 		 */
-		public Graph(int n, int m){
-			this.row = n;
-			this.column = m;
-			//initialize the graph object with zeros as start value
-			for(int i = 0; i < n; i++){
-				for(int j = 0; j < m; j++){
-					this.graph.get(i).set(j,0);
+		public Graph(GraphInfo ginfo){
+			this.row = ginfo.height;
+			this.column = ginfo.width;
+			//initialize the graph object according to ginfo
+			graph = new Vector<>(column);
+			for (Map.Entry<Integer, HashMap<Integer, Double>> entryCol : ginfo.column2row2initialValue.entrySet()) {
+				int currCol = entryCol.getKey();
+				for (Map.Entry<Integer, Double> entryRow : entryCol.getValue().entrySet()) {
+					int currRow = entryRow.getKey();
+					double currVal = entryRow.getValue();
+					if (graph.get(currCol) == null) {
+						graph.add(currCol, new Column());	//TODO correct constructor
+					}
+					graph.get(currCol).addInitialNode(currRow, currVal);
 				}
 			}
 		}
@@ -32,17 +39,9 @@ public class Graph implements ImageConvertible {
 		public int getRow() {
 			return row;
 		}
-
-		public void setRow(int row) {
-			this.row = row;
-		}
-
+		
 		public int getColumn() {
 			return column;
-		}
-
-		public void setColumn(int column) {
-			this.column = column;
 		}
 
 		@Override
